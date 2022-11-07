@@ -1,9 +1,7 @@
-use comfy_table::{*, presets::UTF8_FULL, modifiers::UTF8_ROUND_CORNERS};
-
+use comfy_table::{modifiers::UTF8_ROUND_CORNERS, presets::UTF8_FULL, *};
 
 pub fn comfy_table() {
-
-    let board: [[u8; 9];9] = [
+    let board: [[u8; 9]; 9] = [
         [0, 0, 0, 0, 0, 9, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 4],
         [0, 0, 7, 6, 4, 8, 0, 0, 2],
@@ -17,13 +15,13 @@ pub fn comfy_table() {
 
     let mut b_table = Table::new();
     for i in 0..9 {
-        b_table
-        .add_row(board[i]);
+        b_table.add_row(board[i]);
     }
 
     b_table
-    .load_preset(UTF8_FULL)
-    .apply_modifier(UTF8_ROUND_CORNERS);
+        .load_preset(UTF8_FULL)
+        .apply_modifier(UTF8_ROUND_CORNERS);
 
     println!("{b_table}");
 }
+

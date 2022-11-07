@@ -13,4 +13,3 @@ fn main() {
     // test::comfy_table();
     // fill_board();
 }
-
