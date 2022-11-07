@@ -1,10 +1,5 @@
-#![allow(dead_code)]
-#![allow(unused_variables)]
-#![allow(unused_imports)]
-#![allow(unused_mut)]
-
+use comfy_table::{modifiers::UTF8_ROUND_CORNERS, presets::UTF8_FULL, *};
 use rand::prelude::*;
-use tabled::{Table, Tabled};
 
 pub fn sudoku_solver_main() {
     println!("sudoku_solver.rs init");
@@ -20,20 +15,22 @@ pub fn sudoku_solver_main() {
         [0, 0, 0, 0, 6, 0, 5, 0, 0],
         [0, 2, 3, 0, 1, 0, 0, 0, 0],
     ];
-
-    for rows in board {
-        println!("{:?}", rows);
-        for tiles in rows {
-            let row_to_str = String::new(&tiles.to_string());
-            println!("{:?}", row_to_str);
-        }
-    }
 }
 
-fn solve_board_brute_force(mut board: Vec<Vec<u8>>) -> Vec<Vec<u8>> {
+fn post_board(board: [[u8; 9]; 9]) {
+    let mut post = Table::new();
+    for i in 0..9 {
+        post.add_row(board[i]);
+    }
+    post.load_preset(UTF8_FULL)
+        .apply_modifier(UTF8_ROUND_CORNERS);
+    println!("{post}");
+}
+
+fn solve_board_brute_force_1(mut board: [[u8; 9]; 9]) -> [[u8; 9]; 9] {
     for rows in &mut board {
-        for mut tiles in rows {
-            *tiles = rand::thread_rng().gen_range(0..9);
+        for mut tile in rows {
+            *tile = rand::thread_rng().gen_range(0..9);
             check_legality(tiles);
         }
     }
@@ -41,8 +38,9 @@ fn solve_board_brute_force(mut board: Vec<Vec<u8>>) -> Vec<Vec<u8>> {
 }
 
 fn check_legality(tiles: &mut u8) -> u8 {
-    let illegal_values_1 = vec![5];
-    let illegal_row = vec![5];
+    let illegal_row = [5, 4, 4];
+    let illegal_box = [1, 1, 1];
+    let illegal_col = [illegal_row, illegal_box];
 
     if illegal_values_1.contains(&tiles) {
         *tiles = rand::thread_rng().gen_range(0..9);
@@ -54,3 +52,4 @@ fn check_legality(tiles: &mut u8) -> u8 {
     //return
     *tiles
 }
+

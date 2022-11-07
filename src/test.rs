@@ -1,7 +1,9 @@
-use tabled::{object::Rows, Table, Tabled};
+use comfy_table::{*, presets::UTF8_FULL, modifiers::UTF8_ROUND_CORNERS};
 
-pub fn main() {
-    let board = [
+
+pub fn comfy_table() {
+
+    let board: [[u8; 9];9] = [
         [0, 0, 0, 0, 0, 9, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 4],
         [0, 0, 7, 6, 4, 8, 0, 0, 2],
@@ -13,30 +15,15 @@ pub fn main() {
         [0, 2, 3, 0, 1, 0, 0, 0, 0],
     ];
 
-    for rows in board {
-        for tiles in board {
-            let row_to_str = rows.to_string();
-        }
+    let mut b_table = Table::new();
+    for i in 0..9 {
+        b_table
+        .add_row(board[i]);
     }
 
-    #[derive(Tabled)]
-    struct RowDisplay {
-        row: String,
-    }
+    b_table
+    .load_preset(UTF8_FULL)
+    .apply_modifier(UTF8_ROUND_CORNERS);
 
-    impl RowDisplay {
-        fn new(row: &str) -> Self {
-            Self
-        }
-    }
-
-    let rows = vec![
-        RowDisplay::new("snip"),
-        // RowDisplay::new(),
-        // RowDisplay::new(),
-    ];
-
-    let table = Table::new(rows).to_string();
-
-    println!("{}", table);
+    println!("{b_table}");
 }
