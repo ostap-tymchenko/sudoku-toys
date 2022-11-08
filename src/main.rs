@@ -3,15 +3,15 @@
 #![allow(unused_imports)]
 #![allow(unused_mut)]
 
-// mod sudoku_solver;
+mod sudoku_solver;
 // mod test;
-mod testing2;
+// mod testing2;
 
 use rand::prelude::*;
 
 fn main() {
-    //sudoku_solver::sudoku_solver_main();
-    testing2::main();
+    sudoku_solver::sudoku_solver_main();
+    // testing2::greet();
     // test::comfy_table();
     // fill_board();
 }

@@ -1,5 +1,6 @@
 use comfy_table::{modifiers::UTF8_ROUND_CORNERS, presets::UTF8_FULL, *};
 use rand::prelude::*;
+use std::collections::HashSet;
 
 pub fn sudoku_solver_main() {
     println!("sudoku_solver.rs init");
@@ -31,7 +32,7 @@ fn post_board(board: [[u8; 9]; 9]) {
 fn solve_board_brute_force_1(mut board: [[u8; 9]; 9]) -> [[u8; 9]; 9] {
     for rows in &mut board {
         for mut tile in rows {
-            *tile = rand::thread_rng().gen_range(0..9);
+            *tile = rand::thread_rng().gen_range(1..=9);
             check_legality(tile);
         }
     }
@@ -39,11 +40,13 @@ fn solve_board_brute_force_1(mut board: [[u8; 9]; 9]) -> [[u8; 9]; 9] {
 }
 
 fn check_legality(tiles: &mut u8) -> u8 {
+    
     let illegal_row = [5, 4, 4];
     let illegal_box = [1, 1, 1];
-    let illegal_combined = [illegal_row, illegal_box];
 
-    if tiles.contains(illegal_combined) {
+    let mut illegal_combined  = illegal_row.into_iter().chain(illegal_box.into_iter());
+
+    if illegal_combined.any(|x| x == *tiles) {
         *tiles = rand::thread_rng().gen_range(0..9);
         check_legality(tiles);
         println!("legal didn't pass")
