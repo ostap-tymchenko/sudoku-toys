@@ -10,6 +10,7 @@ cli-table = "0.4.7"
 comfy-table = "6.1.2"
 prettytable-rs = "0.9.0"
 rand = "0.8.5"
+round = "0.1.2"
 tabled = "0.10.0"
 use = "0.0.0"
 
