@@ -9,6 +9,20 @@ extern crate round;
 use round::{round, round_up, round_down};
 // from is used for conversion
 use std::convert::From;
+// for todo()
+#[warn(unreachable_code)]
+
+enum box_range {
+    top_left,
+    top_middle,
+    top_right,
+    middle_left,
+    middle_middle,
+    middle_right,
+    bottom_left,
+    bottom_middle,
+    bottom_right,
+}
 
 pub fn sudoku_solver_main() {
     println!("sudoku_solver.rs init");
@@ -39,37 +53,39 @@ fn post_board(board: [[u8; 9]; 9]) {
 
 // this is the initial that takes a board and asigns it a random value
 // the value is then checked for validity
-fn solve_board_brute_force_1(mut board: [[u8; 9]; 9]) -> [[u8; 9]; 9] {
+fn solve_board_brute_force(mut board: [[u8; 9]; 9]) -> [[u8; 9]; 9] {
     let mut tile_pos:u8 = 0;
-    for rows in &mut board {
+    for rows in &board {
         for mut tile in rows {
             tile_pos += 1;
             *tile = rand::thread_rng().gen_range(1..=9);
-            check_legality(tile, tile_pos);
+            check_legality(&mut tile, tile_pos, board);
         }
     }
     board
 }
 
-fn check_legality(tile: &mut u8, tile_pos: u8) -> u8 {
-    let ftile_pos:f64 = tile_pos as f64;
-    let row:f64 = round_up(tile_pos.into(), 0);
+fn check_legality(tile: &mut u8, tile_pos: u8, board: [[u8; 9]; 9]) -> u8 {
 
-    let illegal_row: [u8; 9] = todo!();
-    let illegal_col: [u8; 9] = todo!();
+    let illegal_row: [u8; 9] = board[round_up(tile_pos.into(), 0) as usize];
+    let illegal_col: [u8; 9] = board[tile_pos % 9];
+    let box_from_tile = (); 
     let illegal_box: [u8; 9] = todo!();
 
-    
+    // let test: HashSet<_> = illegal_row
+    //     .into_iter()
+    //     .chain(illegal_col.into_iter())
+    //     .chain(illegal_box.into_iter())
+    //     .collect();
 
     let mut illegal_combined  = illegal_row.into_iter().chain(illegal_box.into_iter());
 
     if illegal_combined.any(|x| x == *tile) {
         *tile = rand::thread_rng().gen_range(0..9);
-        check_legality(tile, tile_pos);
+        check_legality(tile, tile_pos, board);
         println!("legal didn't pass")
     } else {
         println!("legal passed")
     }
-    //return
     *tile
 }
