@@ -4,24 +4,19 @@ use comfy_table::{modifiers::UTF8_ROUND_CORNERS, presets::UTF8_FULL, *};
 use rand::prelude::*;
 //HashSet is used in todo
 use std::collections::HashSet;
-//round for math in legal checker
-extern crate round;
-use round::{round, round_up, round_down};
-// from is used for conversion
-use std::convert::From;
-// for todo()
-#[warn(unreachable_code)]
+// for flooring
+use math::round;
 
 enum box_range {
-    top_left,
-    top_middle,
-    top_right,
-    middle_left,
-    middle_middle,
-    middle_right,
-    bottom_left,
-    bottom_middle,
-    bottom_right,
+    TopLeft,
+    TopMiddle,
+    TopRight,
+    MiddleLeft,
+    MiddleMiddle,
+    MiddleRight,
+    BottomLeft,
+    BottomMiddle,
+    BottomRight,
 }
 
 pub fn sudoku_solver_main() {
@@ -38,6 +33,8 @@ pub fn sudoku_solver_main() {
         [0, 0, 0, 0, 6, 0, 5, 0, 0], // 64-72
         [0, 2, 3, 0, 1, 0, 0, 0, 0], // 73-81
     ];
+
+    solve_board_brute_force(board);
 }
 // this takes a 9*9 array as board and prints it into a table
 fn post_board(board: [[u8; 9]; 9]) {
@@ -62,23 +59,27 @@ fn solve_board_brute_force(mut board: [[u8; 9]; 9]) -> [[u8; 9]; 9] {
             check_legality(&mut tile, tile_pos, board);
         }
     }
+    post_board(board);
     board
 }
 
 fn check_legality(tile: &mut u8, tile_pos: u8, board: [[u8; 9]; 9]) -> u8 {
 
-    let illegal_row: [u8; 9] = board[round_up(tile_pos.into(), 0) as usize];
-    let illegal_col: [u8; 9] = board[tile_pos % 9];
-    let box_from_tile = (); 
-    let illegal_box: [u8; 9] = todo!();
+    let row: [u8; 9] = board[round::floor[tile_pos/9]];
+    dbg!(row);
 
-    // let test: HashSet<_> = illegal_row
-    //     .into_iter()
-    //     .chain(illegal_col.into_iter())
-    //     .chain(illegal_box.into_iter())
-    //     .collect();
+    let col: [u8; 9] = board[[tile_pos%9].into()];
+    dbg!(col);
+    
+    // let illegal_box: [u8; 9] = 
+    let x_cord = row.map(|x| x/3).collect();
+    let y_cord = col.map(|x| x/3).collect();
 
-    let mut illegal_combined  = illegal_row.into_iter().chain(illegal_box.into_iter());
+    let illegal_combined: HashSet<_> = row
+        .into_iter()
+        .chain(col.into_iter())
+        .chain(xy_box.into_iter())
+        .collect();
 
     if illegal_combined.any(|x| x == *tile) {
         *tile = rand::thread_rng().gen_range(0..9);
