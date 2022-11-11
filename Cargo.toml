@@ -7,7 +7,6 @@ edition = "2021"
 
 [dependencies]
 comfy-table = "6.1.2"
-math = "0.10.0"
 rand = "0.8.5"
 use = "0.0.0"
 
