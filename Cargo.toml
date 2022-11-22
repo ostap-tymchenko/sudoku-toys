@@ -2,12 +2,14 @@
 name = "sudoku"
 version = "0.1.0"
 edition = "2021"
+pdebug = true
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
 ansi_term = "0.12.1"
 comfy-table = "6.1.2"
+ndarray = "0.15.6"
 rand = "0.8.5"
 use = "0.0.0"
 

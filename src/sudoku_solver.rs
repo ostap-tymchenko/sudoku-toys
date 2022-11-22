@@ -2,6 +2,8 @@
 use comfy_table::{modifiers::UTF8_ROUND_CORNERS, presets::UTF8_FULL, *};
 // random for generating a random number for a tile
 use rand::prelude::*;
+use std::collections::HashSet;
+use ndarray::prelude::*;
 
 #[derive(Debug)]
 enum BoxRange {
@@ -51,42 +53,23 @@ fn solve_board_brute_force(mut board: [[i32; 9]; 9]) -> [[i32; 9]; 9] {
     for row in board {
         for mut tile in row {
             tile_pos += 1;
-            println!("old ={tile}");
+            // println!("old ={tile}");
             if tile == 0 {
-                let tile = rand::thread_rng().gen_range(1..10);
-                println!("new ={tile}");
+                let mut tile = rand::thread_rng().gen_range(1..10);
+                // println!("new ={tile}");
                 check_legality(&mut tile, tile_pos, board);
-            } else {print!("skipped tile");}
+            } else {/*print!("skipped tile");*/}
         }
     }
     post_board(board);
     board
 }
-
-fn check_legality(tile: &mut i32, tile_pos:i32, board: [[i32; 9]; 9]) -> i32 {
-    let tile_pos_f32 =f32::from(tile_pos as u8); dbg!(tile_pos);
-    let row: [i32; 9] = board[[tile_pos_f32 / 9.0].iter().collect()];
-    let col: [i32; 9] = board[[tile_pos_f32 % 9.0].iter().collect()];
-    dbg!(row, col);
-
-    let box_range = match tile_pos {
-        1..=9 => BoxRange::TopLeft,
-        10..=18 => BoxRange::TopMiddle,
-        19..=27 => BoxRange::TopRight,
-        28..=36 => BoxRange::MiddleLeft,
-        37..=45 => BoxRange::MiddleMiddle,
-        46..=54 => BoxRange::MiddleRight,
-        55..=63 => BoxRange::BottomLeft,
-        64..=72 => BoxRange::BottomMiddle,
-        73..=81 => BoxRange::BottomRight,
-        _ => BoxRange::TopLeft,
-    };
-
-    let box_cont = 
     
-    dbg!(box_range);
-    dbg!(row);
-    dbg!(col);
+fn check_legality(tile: &mut i32, tile_pos:i32, board: [[i32; 9]; 9]) -> i32 {
+    let row = board[(tile_pos as f64 / 9.0).floor() as usize ];
+    let col = board[(tile_pos as f64 % 9.0) as usize ];
+    let boc = board.slice(s![])
+    let possibilities = HashSet::from([1..10]);
 
     // *tile
     4
