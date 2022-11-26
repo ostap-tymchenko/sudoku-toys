@@ -5,19 +5,6 @@ use rand::prelude::*;
 use std::collections::HashSet;
 use ndarray::prelude::*;
 
-#[derive(Debug)]
-enum BoxRange {
-    TopLeft,
-    TopMiddle,
-    TopRight,
-    MiddleLeft,
-    MiddleMiddle,
-    MiddleRight,
-    BottomLeft,
-    BottomMiddle,
-    BottomRight,
-}
-
 pub fn sudoku_solver_main() {
     let board = [
         [0, 0, 0, 0, 0, 9, 0, 0, 0], // 01-09
@@ -30,6 +17,8 @@ pub fn sudoku_solver_main() {
         [0, 0, 0, 0, 6, 0, 5, 0, 0], // 64-72
         [0, 2, 3, 0, 1, 0, 0, 0, 0], // 73-81
     ];
+
+    println!("{}", board.as_slice(s![1..4, 1..4]).iter().copied().collect::<array1<_>>());
 
     solve_board_brute_force(board);
 }
@@ -68,9 +57,26 @@ fn solve_board_brute_force(mut board: [[i32; 9]; 9]) -> [[i32; 9]; 9] {
 fn check_legality(tile: &mut i32, tile_pos:i32, board: [[i32; 9]; 9]) -> i32 {
     let row = board[(tile_pos as f64 / 9.0).floor() as usize ];
     let col = board[(tile_pos as f64 % 9.0) as usize ];
-    let boc = board.slice(s![])
+
     let possibilities = HashSet::from([1..10]);
 
+    // 1..4 => 1,
+    // 4..7 => 2,
+    // 7..10 => 3,
+
+    let box = match (row, col) {
+        (1..4, 1..4) => (1, 4)
+        (1..4, 4..7) => (4, 4)
+        (1..4, 7..10) => (7, 4)
+        (4..7, 1..4) => (1, 7)
+        (4..7, 4..7) => (4, 7)
+        (4..7, 7..10) => (7, 7)
+        (7..10, 1..4) => (1, 10)
+        (7..10, 4..7) => (4, 10)
+        (7..10, 7..10) => (7, 10)
+    };
+
+    let cur_box = board.slice(s![box.0, box.1]);
     // *tile
     4
 }
