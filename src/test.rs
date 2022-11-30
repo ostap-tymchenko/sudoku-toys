@@ -3,7 +3,7 @@ use std::collections::HashSet;
 use comfy_table::{modifiers::UTF8_ROUND_CORNERS, presets::UTF8_FULL, *};
 
 pub fn test_main() {
-    let board = 2 [[1..9]];
+    let board = [[1..9]];
 
     // println!("{}", board.as_slice(s![1..4, 1..4]).iter().copied().collect::<array1<_>>());
     post_board(board);
